@@ -11,18 +11,46 @@
 #       nodePort: 32468   # The external port on the node to access the service
 #   type: NodePort       # Expose the service via NodePort to allow external access
 
-apiVersion: v1
-kind: Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: react-app-service
+#   labels:
+#     app: react-app
+# spec:
+#   type: ClusterIP  # You can change this to NodePort or LoadBalancer if needed
+#   ports:
+#     - port: 80
+#       targetPort: 80
+#       protocol: TCP
+#   selector:
+#     app: react-app  # This should match the labels of the pods you want this service to target
+
+
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: react-app-service
-  labels:
-    app: react-app
+  name: react-app
 spec:
-  type: ClusterIP  # You can change this to NodePort or LoadBalancer if needed
-  ports:
-    - port: 80
-      targetPort: 80
-      protocol: TCP
+  replicas: 1
   selector:
-    app: react-app  # This should match the labels of the pods you want this service to target
+    matchLabels:
+      app: react-app
+  template:
+    metadata:
+      labels:
+        app: react-app
+    spec:
+      containers:
+      - name: react-app
+        image: bhavyascaler/react-app:latest
+        ports:
+        - containerPort: 3000  # Assuming your React app serves on port 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
 
