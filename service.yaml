@@ -27,30 +27,20 @@
 #     app: react-app  # This should match the labels of the pods you want this service to target
 
 
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: react-app
+  name: react-app-service
+  labels:
+    app: react-app
 spec:
-  replicas: 1
+  type: NodePort  # Changed from ClusterIP to NodePort
+  ports:
+    - port: 80
+      targetPort: 3000  # Your application is serving content on port 3000 inside the container
+      nodePort: 31000   # Optionally specify the nodePort or let Kubernetes choose for you
+      protocol: TCP
   selector:
-    matchLabels:
-      app: react-app
-  template:
-    metadata:
-      labels:
-        app: react-app
-    spec:
-      containers:
-      - name: react-app
-        image: bhavyascaler/react-app:latest
-        ports:
-        - containerPort: 3000  # Assuming your React app serves on port 3000
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "250m"
+    app: react-app
+
 
