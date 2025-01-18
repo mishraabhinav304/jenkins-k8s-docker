@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: react-app-service
 spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 32468
   selector:
-    app: react-app
+    app: react-app  # This should match the label in the deployment
+  ports:
+    - port: 80         # The port exposed by the service
+      targetPort: 3000  # The port inside the container where the React app is running
+      nodePort: 32468   # The external port on the node to access the service
+  type: NodePort       # Expose the service via NodePort to allow external access
