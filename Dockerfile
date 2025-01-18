@@ -25,17 +25,50 @@
 
 
 # Build stage
-FROM node:23.5.0-alpine3.20 as build
+# FROM node:23.5.0-alpine3.20 as build
+# WORKDIR /app
+# COPY package.json package-lock.json ./
+# RUN npm install
+# RUN npm install web-vitals --save
+# COPY . .
+# RUN npm run build
+
+# # Production stage
+# FROM nginx:alpine
+# COPY --from=build /app/build /usr/share/nginx/html
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
+
+
+# Stage 1: Build the React application
+FROM node:14-alpine as build
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 RUN npm install web-vitals --save
+
+# Copy the rest of your application code
 COPY . .
+
+# Build the React application
 RUN npm run build
 
-# Production stage
+# Stage 2: Serve the app using Nginx
 FROM nginx:alpine
+# Copy the built files from the build stage to the Nginx serve directory
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+
+# Expose port 3000 (change this if you are using a different port)
+EXPOSE 3000
+
+# Optional: Custom Nginx configuration
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
 
