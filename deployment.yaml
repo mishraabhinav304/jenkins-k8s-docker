@@ -19,6 +19,26 @@
 #         image: bhavyascaler/react-app:latest #The Docker image for building the React.js application container
 #         ports:
 #         - containerPort: 3000 #The port for the React.js application container
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: react-app
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: react-app
+#   template:
+#     metadata:
+#       labels:
+#         app: react-app
+#     spec:
+#       containers:
+#       - name: react-app #The name of the react.js application container
+#         image: bhavyascaler/react-app:latest #The Docker image for building the React.js application container
+#         ports:
+#         - containerPort: 80 #The port for the React.js application container
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,8 +54,16 @@ spec:
         app: react-app
     spec:
       containers:
-      - name: react-app #The name of the react.js application container
-        image: bhavyascaler/react-app:latest #The Docker image for building the React.js application container
+      - name: react-app
+        image: bhavyascaler/react-app:latest
         ports:
-        - containerPort: 80 #The port for the React.js application container
+        - containerPort: 3000  # Assuming your React app serves on port 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+
 
