@@ -29,6 +29,7 @@ FROM node:23.5.0-alpine3.20 as build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
+RUN npm install web-vitals --save
 COPY . .
 RUN npm run build
 
