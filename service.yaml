@@ -1,12 +1,28 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: react-app-service
+# spec:
+#   selector:
+#     app: react-app  # This should match the label in the deployment
+#   ports:
+#     - port: 80         # The port exposed by the service
+#       targetPort: 3000  # The port inside the container where the React app is running
+#       nodePort: 32468   # The external port on the node to access the service
+#   type: NodePort       # Expose the service via NodePort to allow external access
+
 apiVersion: v1
 kind: Service
 metadata:
   name: react-app-service
+  labels:
+    app: react-app
 spec:
-  selector:
-    app: react-app  # This should match the label in the deployment
+  type: ClusterIP  # You can change this to NodePort or LoadBalancer if needed
   ports:
-    - port: 80         # The port exposed by the service
-      targetPort: 3000  # The port inside the container where the React app is running
-      nodePort: 32468   # The external port on the node to access the service
-  type: NodePort       # Expose the service via NodePort to allow external access
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: react-app  # This should match the labels of the pods you want this service to target
+
