@@ -15,7 +15,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    sh 'docker build -t bhavyascaler/react-app:latest .'
+                    sh 'docker build -t abhinav304/react-app:latest .'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
 
         stage('Push') {
             steps {
-                sh 'docker push bhavyascaler/react-app:latest'
+                sh 'docker push abhinav304/react-app:latest'
             }
         }
 
